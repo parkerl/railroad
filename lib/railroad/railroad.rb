@@ -18,28 +18,43 @@ class Railroad
     distance
   end
 
-  def self.shortest_route(starting_town, ending_town)
-    find_route(starting_town, ending_town)
+  def self.max_by_miles(starting_town, ending_town, distance)
+    available_routes = all_routes(starting_town, ending_town)
+    #find the distance for all routes
+    #return the routes that are under the given distance 
   end
 
-  def self.find_route(starting_town, ending_town)
+  def self.all_routes(starting_town, ending_town)
+    routes = []
+    nodes = []
+    starting_town.routes.each do |route|
+      routes << [route.name]
+      nodes << Town.find(route.end_point)
+    end
+    while !( nodes.all? { |node| node.end_point == ending_town.name })
+      #
+    end
+
+
+
+    #find the route for the town
+    #breadth first search
+      #for the starting node
+      #pick a node that hasn't been picked yet
+      #keep going with this until all nodes have reached the final node
+  end
+
+  def self.shortest_route(starting_town, ending_town)
     distance = 0
     starting_town = Town.find(starting_town)
     ending_town = Town.find(ending_town)
     current_town = nil
-    current_town, distance_traveled = travel_from(starting_town)
+    current_town, distance_traveled = starting_town.shortest_route
     distance += distance_traveled
     while current_town != ending_town
-      current_town, distance_traveled = travel_from(current_town)
+      current_town, distance_traveled = current_town.shortest_route
       distance += distance_traveled
     end
     distance
-  end
-
-  def self.travel_from(town)
-    route = town.shortest_route
-    #from the town
-    #return the town's shortest route
-    #return an array that is the next town, and the distance from the route
   end
 end

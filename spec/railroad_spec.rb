@@ -69,7 +69,6 @@ describe Railroad do
     context "given a maximum distance" do
 
       it "calculates the number of routes between two towns" do
-        pending 
         number_routes = Railroad.max_by_miles('C', 'C', 30)
         expect(number_routes).to eq 7
       end 
