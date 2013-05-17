@@ -24,17 +24,16 @@ class Railroad
 
   def self.find_route(starting_town, ending_town)
     distance = 0
-    current_town = Town.find_by_name(starting_town)
+    starting_town = Town.find_by_name(starting_town)
+    current_town = nil
     ending_town = Town.find_by_name(ending_town)
+    current_town, distance_traveled = travel_from(starting_town)
+    distance += distance_traveled
     while current_town != ending_town
       current_town, distance_traveled = travel_from(current_town)
       distance += distance_traveled
     end
-    puts distance
     distance
-    #starting at the first town
-    #return its shortest route to the next city
-    #keep doing this until the city is the second city
   end
 
   def self.travel_from(town)

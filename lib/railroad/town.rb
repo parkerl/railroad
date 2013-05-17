@@ -20,19 +20,20 @@ class Town
   end
 
   def shortest_route
-    r = []
+    town = nil
+    shortest = 0
     self.routes.each do |t|
-      if r.empty?
-        r << t
-      elsif t.distance < r.first.distance
-        r.clear if r.empty?
-        r << t
-      else
+      if shortest == 0
+        shortest = t.distance
+        town = t.end_point
+      else 
+        if t.distance < shortest
+        shortest = t.distance
+        town = t.end_point
+        end
       end
-      r
     end
-    town = Town.find_by_name(r.first.end_point)
-    [town, r.first.distance]
+    [Town.find_by_name(town), shortest]
   end
 
   def connected_to?(town)

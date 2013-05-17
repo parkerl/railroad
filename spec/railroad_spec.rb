@@ -59,7 +59,6 @@ describe Railroad do
     end 
 
     it "calculates the shortest route between two towns for the ninth test" do
-      pending
       shortest = Railroad.shortest_route('B', 'B')
       expect(shortest).to eq 9 
     end
