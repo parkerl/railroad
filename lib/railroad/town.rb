@@ -7,7 +7,7 @@ class Town
     @routes = Array.new
   end
 
-  def self.find_by_name(name)
+  def self.find(name)
     all.find { |town| town.name == name }
   end
 
@@ -33,7 +33,7 @@ class Town
         end
       end
     end
-    [Town.find_by_name(town), shortest]
+    [Town.find(town), shortest]
   end
 
   def connected_to?(town)
@@ -45,8 +45,8 @@ class Town
   end
 
   def self.find_or_create(town)
-    if find_by_name(town)
-      find_by_name(town)
+    if find(town)
+      find(town)
     else
      create(town)
    end

@@ -6,7 +6,7 @@ class Railroad
 
   def self.distance(*towns)
     distance = 0
-    towns_in_route = towns.collect { |town| Town.find_by_name(town) }
+    towns_in_route = towns.collect { |town| Town.find(town) }
     towns_in_route.each_with_index do |current_town, index|
       next_town = towns_in_route[index + 1]
       if current_town.connected_to?(next_town)
@@ -24,9 +24,9 @@ class Railroad
 
   def self.find_route(starting_town, ending_town)
     distance = 0
-    starting_town = Town.find_by_name(starting_town)
+    starting_town = Town.find(starting_town)
+    ending_town = Town.find(ending_town)
     current_town = nil
-    ending_town = Town.find_by_name(ending_town)
     current_town, distance_traveled = travel_from(starting_town)
     distance += distance_traveled
     while current_town != ending_town
