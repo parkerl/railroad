@@ -20,28 +20,43 @@ class Railroad
 
   def self.max_by_miles(starting_town, ending_town, distance)
     available_routes = all_routes(starting_town, ending_town)
-    #find the distance for all routes
-    #return the routes that are under the given distance 
+    
   end
 
   def self.all_routes(starting_town, ending_town)
-    routes = []
+    r = []
     nodes = []
+    starting_town = Town.find(starting_town)
     starting_town.routes.each do |route|
-      routes << [route.name]
+      r << starting_town.name + route.end_point
       nodes << Town.find(route.end_point)
     end
-    while !( nodes.all? { |node| node.end_point == ending_town.name })
-      #
+    while !( nodes.all? { |node| node.name == ending_town })
+      r = nodes.collect { |town| expand(town, r.flatten) }.flatten
+      end_routes = nodes.collect { |node| node.routes }
+      new_nodes = end_routes.flatten.collect { |route| route.end_point }
+      nodes.clear
+      nodes = new_nodes.collect { |node| Town.find(node) }
+      nodes = nodes.select { |node| node.name != ending_town }
     end
+    puts r.uniq.inspect
+  end
 
-
-
-    #find the route for the town
-    #breadth first search
-      #for the starting node
-      #pick a node that hasn't been picked yet
-      #keep going with this until all nodes have reached the final node
+  def self.expand(town, nodes)
+    final_routes = nodes
+    nodes.flatten.each do |node|
+      a = node.split("")
+      if a.last == town.name
+        final_routes.delete(node)
+        branches = a * town.routes.count
+        branches.each do |branch|
+          n = town.routes.collect { |i| i.end_point }
+          l = branch + n.pop
+          final_routes << l
+        end
+      end
+    end
+    final_routes
   end
 
   def self.shortest_route(starting_town, ending_town)
