@@ -4,7 +4,7 @@ class Town
 
   def initialize(town)
     @name = town
-    @routes = Array.new
+    @routes = []
   end
 
   def self.find(name)

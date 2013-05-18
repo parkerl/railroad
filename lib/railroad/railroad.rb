@@ -21,6 +21,7 @@ class Railroad
 
   def self.max_by_miles(starting_town, ending_town, max_distance)
     available_routes = all_routes(starting_town, ending_town)
+    puts " routes #{available_routes.inspect}"
     available_routes.select { |i| distance(i.split("")) < max_distance }.count
   end
 
@@ -36,45 +37,54 @@ class Railroad
   def self.all_routes(starting_town, ending_town)
 
     starting_town = Town.find(starting_town)
-    paths, nodes = add_paths(starting_town)
+    paths, nodes = add_branches(starting_town), add_nodes(starting_town)
 
-    while !( nodes.all? { |node| node.name == ending_town })
-      paths = nodes.collect { |town| expand_branch(town, paths.flatten) }.flatten
-      nodes = traverse(nodes)
-      nodes = nodes.select { |node| node.name != ending_town }
+    while !( nodes.all? { |node| arrived?(node.name, ending_town) })
+      paths = nodes.collect { |town| expand_branch(town, paths) }.flatten!
+      nodes = traverse(nodes).flatten
+      nodes = not_arrived(nodes, ending_town)
     end
-    paths.uniq
+    paths
   end
 
-  def self.add_paths(town, paths = [], nodes = [])
-    town.routes.each do |route|
-      paths << "#{town.name}#{route.end_point}"   
-      nodes << Town.find(route.end_point)
+  def self.not_arrived(nodes, ending_town)
+    nodes.select { |node| node.name != ending_town }
+  end
+
+  def self.arrived?(current_town, destination)
+    current_town == destination
+  end
+
+  def self.add_branches(town, branch = nil, paths = [])
+    if branch
+      town.routes.collect { |r| "#{branch}#{r.end_point}" }
+    else
+      town.routes.collect { |r| "#{town.name}#{r.end_point}" }
     end
-    [paths, nodes]
+  end
+
+  def self.add_nodes(town)
+    town.routes.collect { |r| Town.find(r.end_point) } 
   end
 
   def self.traverse(nodes)
-    end_routes = nodes.collect { |node| node.routes }
-    new_nodes = end_routes.flatten.collect { |route| route.end_point }
-    nodes.clear
-    nodes = new_nodes.collect { |node| Town.find(node) }
+    nodes.collect { |t| add_nodes(t)}
   end
 
   def self.expand_branch(town, paths)
-    final_routes = paths
-    paths.each do |node|
-      a = node.split("")
-      if a.last == town.name
-        n = town.routes.collect { |i| i.end_point }
-        1.upto(town.routes.count) do |i|
-          l = node + n.pop
-          final_routes << l
-        end
-        final_routes.delete(node)
+    towns_branches = []
+    paths.each do |n|
+      a = n.split("")
+      if continue_branch?(a.last, town.name)
+        towns_branches << add_branches(town, n)
+        paths.delete(n)
       end
     end
-    final_routes.flatten
+    paths + towns_branches.flatten!
+  end
+
+  def self.continue_branch?(path_end, node)
+    path_end == node
   end
 
   def self.shortest_route(starting_town, ending_town)
