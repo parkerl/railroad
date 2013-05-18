@@ -45,11 +45,19 @@ describe Railroad do
     end
   end
 
-  describe ".routes_by_stops" do 
+  describe ".max_by_stops" do 
 
     context "given a maximum number of stops" do 
 
-      it "calculates the number of routes between two towns" do 
+      it "calculates the number of routes between two towns- first test" do 
+        i = Railroad.max_by_stops('C', 'C', 3)
+        expect(i).to eq 2
+      end
+
+      it "calculates the number of routes between two towns- second test" do 
+        pending
+        i = Railroad.max_by_stops('A', 'C', 4)
+        expect(i).to eq 3
       end
     end
   end
