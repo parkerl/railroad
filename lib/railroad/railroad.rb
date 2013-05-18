@@ -6,7 +6,8 @@ class Railroad
 
   def self.distance(*towns)
     distance = 0
-    towns_in_route = towns.collect { |town| Town.find(town) }
+
+    towns_in_route = towns.flatten.collect { |t| Town.find(t) }
     towns_in_route.each_with_index do |current_town, index|
       next_town = towns_in_route[index + 1]
       if current_town.connected_to?(next_town)
@@ -18,9 +19,9 @@ class Railroad
     distance
   end
 
-  def self.max_by_miles(starting_town, ending_town, distance)
+  def self.max_by_miles(starting_town, ending_town, max_distance)
     available_routes = all_routes(starting_town, ending_town)
-    
+    available_routes.select { |i| distance(i.split("")) < max_distance }.count
   end
 
   def self.all_routes(starting_town, ending_town)
@@ -39,7 +40,7 @@ class Railroad
       nodes = new_nodes.collect { |node| Town.find(node) }
       nodes = nodes.select { |node| node.name != ending_town }
     end
-    puts r.uniq.inspect
+    r.uniq
   end
 
   def self.expand(town, nodes)

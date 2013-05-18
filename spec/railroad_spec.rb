@@ -2,10 +2,13 @@ require './spec/spec_helper'
 
 describe Railroad do
 
+  before do 
+    Railroad.map('AB5', 'BC4', 'CD8', 'DC8', 'DE6', 'AD5', 'CE2', 'EB3', 'AE7')
+  end
+
   describe ".build" do 
 
     it "creates all routes" do 
-      Railroad.map('AB5', 'BC4', 'CD8', 'DC8', 'DE6', 'AD5', 'CE2', 'EB3', 'AE7')
       expect(Railroad.map.count).to eq 5
     end
   end
