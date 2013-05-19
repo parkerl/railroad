@@ -45,18 +45,17 @@ describe Railroad do
     end
   end
 
-  describe ".max_by_stops" do 
+  describe ".routes_by_stops" do 
 
     context "given a maximum number of stops" do 
 
       it "calculates the number of routes between two towns- first test" do 
-        i = Railroad.max_by_stops('C', 'C', 3)
+        i = Railroad.routes_by_stops('C', 'C', 3)
         expect(i).to eq 2
       end
 
       it "calculates the number of routes between two towns- second test" do 
-        pending
-        i = Railroad.max_by_stops('A', 'C', 4)
+        i = Railroad.routes_by_stops('A', 'C', 4)
         expect(i).to eq 3
       end
     end
@@ -70,6 +69,7 @@ describe Railroad do
     end 
 
     it "calculates the shortest route between two towns for the ninth test" do
+      pending
       shortest = Railroad.shortest_route('B', 'B')
       expect(shortest).to eq 9 
     end
@@ -80,7 +80,7 @@ describe Railroad do
     context "given a maximum distance" do
 
       it "calculates the number of routes between two towns" do
-        number_routes = Railroad.max_by_miles('C', 'C', 30)
+        number_routes = Railroad.routes_by_distance('C', 'C', 30)
         expect(number_routes).to eq 7
       end 
     end
