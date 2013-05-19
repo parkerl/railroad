@@ -24,6 +24,7 @@ class Railroad
 
   def self.routes_by_stops(starting_town, ending_town, max)
     available_routes = routes_between(starting_town, ending_town)
+    puts available_routes
     available_routes.select { |i| stops(i) < max }.count
   end
 
@@ -42,11 +43,10 @@ class Railroad
 
       nodes = nodes.select { |node| node.name != ending_town  }
     end
-
-    add_final(paths, ending_town)
+    final(paths, ending_town)
   end
 
-  def self.add_final(paths, town_name)
+  def self.final(paths, town_name)
     paths.each do |p|
       a = p.split("")
       if a.last != town_name
