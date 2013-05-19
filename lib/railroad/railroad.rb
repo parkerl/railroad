@@ -24,7 +24,6 @@ class Railroad
 
   def self.routes_by_stops(starting_town, ending_town, max)
     available_routes = routes_between(starting_town, ending_town)
-    puts available_routes
     available_routes.select { |i| stops(i) < max }.count
   end
 
