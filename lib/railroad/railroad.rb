@@ -19,12 +19,16 @@ class Railroad
 
   def self.routes_by_distance(starting_town, ending_town, max)
     routes = routes_between(starting_town, ending_town)
-    routes.select { |i| distance(i.split("")) < max }.count
+    routes.select { |i| distance(i.split("")) <= max }.count
   end
 
-  def self.routes_by_stops(starting_town, ending_town, max)
+  def self.routes_by_stops(starting_town, ending_town, max, type = 'maximum')
     available_routes = routes_between(starting_town, ending_town)
-    available_routes.select { |i| stops(i) <= max }.count
+    if type == 'maximum'
+      available_routes.select { |i| stops(i) <= max }.count
+    else
+      available_routes.select { |i| stops(i) == max }.count
+    end
   end
 
   def self.routes_between(starting_town, ending_town)

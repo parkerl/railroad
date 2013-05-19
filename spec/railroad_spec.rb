@@ -50,12 +50,15 @@ describe Railroad do
     context "given a maximum number of stops" do 
 
       it "calculates the number of routes between two towns- first test" do
-        i = Railroad.routes_by_stops('C', 'C', 3)
+        i = Railroad.routes_by_stops('C', 'C', 3, 'maximum')
         expect(i).to eq 2
       end
+    end
+
+    context "given an exact number of stops" do 
 
       it "calculates the number of routes between two towns- second test" do 
-        i = Railroad.routes_by_stops('A', 'C', 4)
+        i = Railroad.routes_by_stops('A', 'C', 4, 'exact')
         expect(i).to eq 3
       end
     end
