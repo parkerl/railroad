@@ -24,11 +24,10 @@ class Railroad
 
   def self.routes_by_stops(starting_town, ending_town, max)
     available_routes = routes_between(starting_town, ending_town)
-    available_routes.select { |i| stops(i) < max }.count
+    available_routes.select { |i| stops(i) <= max }.count
   end
 
   def self.routes_between(starting_town, ending_town)
-
 
     starting_town = find_town(starting_town) 
     paths, nodes = routes_from(starting_town), neighbors_to(starting_town)
