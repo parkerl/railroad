@@ -24,11 +24,27 @@ class Railroad
 
   def self.routes_by_stops(starting_town, ending_town, max, type = 'maximum')
     available_routes = routes_between(starting_town, ending_town)
-    if type == 'maximum'
-      available_routes.select { |i| stops(i) <= max }.count
-    else
-      available_routes.select { |i| stops(i) == max }.count
+    final_routes = available_routes.select { |i| stops(i) == max }
+    
+    available_routes = available_routes.select { |i| stops(i) < max }
+
+    loop do 
+
+      available_routes.each do |r|
+        last_town = r.split("").last
+        next_routes = routes_between(last_town, ending_town)
+        available_routes << next_routes.collect { |t| "#{r}#{t[1..-1]}" }.flatten
+      end
+
+      final_routes << available_routes.select { |i| stops(i) == max }.flatten!
+
+      available_routes = available_routes.select { |i| stops(i) < max }.flatten!
+
+      break if available_routes.empty? || (available_routes == nil)
+
     end
+
+    final_routes
   end
 
   def self.routes_between(starting_town, ending_town)
