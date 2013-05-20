@@ -1,9 +1,9 @@
 class Route
 
-  attr_reader :end_point, :distance
+  attr_reader :destination, :distance
 
-  def initialize(end_point, distance)
-    @end_point = end_point
+  def initialize(destination, distance)
+    @destination = destination
     @distance = distance.to_i
   end
 end

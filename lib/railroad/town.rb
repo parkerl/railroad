@@ -12,12 +12,14 @@ class Town
   end
 
   def distance_to(next_town)
-    route = self.routes.select { |route| route.end_point == next_town.name }
+    #this use or route as a variable name both
+    #inside and outside the block is a possible smell
+    route = self.routes.select { |route| route.destination == next_town.name }
     route.first.distance
   end
 
   # def connected_to?(town)
-  #   true if ( self.routes.select { |route| route.end_point == town } != nil )
+  #   true if ( self.routes.select { |route| route.destination == town } != nil )
   # end
 
   def add_route(destination, distance)
@@ -34,6 +36,11 @@ class Town
     town
   end
 
+  #In general you want to use class methods when they are stateless. That means
+  #nothing is persited between method calls. By setting @towns here you are essentially
+  #setting up a global variable. This is a code smell. I think that all the class methods
+  #in this class probably belong in another abstracton such as RouteMap which might logically maintain
+  #a collection of towns.
   def self.all
     @towns ||= []
   end
