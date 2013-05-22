@@ -1,22 +1,26 @@
 class RouteMap
 
+  def initialize
+    @towns = {}
+  end
+
   def self.build_map(routes)
-    routes.each { |route| draw(route) }
-    Town.all
+    new_map = RouteMap.new
+
+    routes.each do |route|
+      starting_town_name, ending_town_name, distance = route.split("")
+      starting_town = new_map.find_or_create_town(starting_town_name)
+      ending_town = new_map.find_or_create_town(ending_town_name)
+      starting_town.add_route(ending_town, distance.to_i)
+    end
+    new_map
   end
 
-  def self.draw(route) 
-    starting_town, ending_town, distance = (route).split("")
-    town = Town.find_or_create(starting_town)
-    town.add_route(ending_town, distance)
-    self.draw_map(Town.all)
+  def find_or_create_town(town_name)
+    @towns[town_name] ||= Town.new(town_name)
   end
 
-  def self.draw_map(towns)
-    #for each town
-    #town's routes
-      #generate a hash where the key is the beginning and ending point, and the values are:
-        #all routes { ABC => [ 5, 10] }
-
+  def towns
+    @towns.values
   end
 end
