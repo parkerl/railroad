@@ -61,5 +61,18 @@ describe Town do
         expect(Town.find_or_create('A').name).to eq 'A'
       end
     end
+
+    describe '#route_to' do
+      it 'should return the route that goes to the specified town' do
+        departure_town = Town.new('departure town')
+        destination_town = Town.new('destination town')
+        non_destination_town = Town.new('non destination town')
+
+        route = departure_town.add_route(destination_town, 1)
+        departure_town.add_route(non_destination_town, 1)
+
+        departure_town.route_to(destination_town).should == route
+      end
+    end
   end
 end

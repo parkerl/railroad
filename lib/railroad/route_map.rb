@@ -9,8 +9,10 @@ class RouteMap
 
     routes.each do |route|
       starting_town_name, ending_town_name, distance = route.split("")
+
       starting_town = new_map.find_or_create_town(starting_town_name)
       ending_town = new_map.find_or_create_town(ending_town_name)
+
       starting_town.add_route(ending_town, distance.to_i)
     end
     new_map
@@ -22,5 +24,9 @@ class RouteMap
 
   def towns
     @towns.values
+  end
+
+  def find_town(town_name)
+    @towns[town_name]
   end
 end

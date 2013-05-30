@@ -36,5 +36,13 @@ describe RouteMap do
       town.should == existing_town
     end
   end
+
+  describe '#find_town' do
+    it 'should return the town with the specified name' do
+      map = RouteMap.new
+      town = map.find_or_create_town('Test')
+      map.find_town('Test').should == town
+    end
+  end
 end
 

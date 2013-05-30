@@ -1,23 +1,22 @@
 class Railroad
+  attr_reader :map
 
-
-  def self.map(*routes)
-    #@map is not used anywhere...and also it is generally a bad idea
-    #to store data in instance variables in class methods
-    @map ||= RouteMap.build_map(routes)
+  def initialize(*routes)
+    @map = RouteMap.build_map(routes)
   end
 
-  def self.distance(*towns)
-    distance = 0
+  def distance(*towns)
+  departure_town = map.find_town(towns.shift)
 
-    stops = towns.flatten.collect { |t| find_town(t) }
+    routes_to_destination = towns.map do |town_name|
+      next_town = map.find_town(town_name)
 
-    stops.each_with_index do |current_town, index|
-      break if index == stops.length - 1
-      next_town = stops[index + 1]
-      distance += current_town.distance_to(next_town)
+      route = departure_town.route_to(next_town)
+      departure_town = route.destination
+      route
     end
-    distance
+
+    routes_to_destination.map(&:distance).reduce(&:+)
   end
 
   def self.routes_by_distance(starting_town, ending_town, max)

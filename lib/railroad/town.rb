@@ -18,12 +18,17 @@ class Town
     route.first.distance
   end
 
+  def route_to(town)
+    routes.find{|route| route.destination == town}
+  end
+
   # def connected_to?(town)
   #   true if ( self.routes.select { |route| route.destination == town } != nil )
   # end
 
   def add_route(destination, distance)
-    @routes << Route.new(destination, distance)
+    @routes << new_route = Route.new(destination, distance)
+    new_route
   end
 
   def self.find_or_create(town)
